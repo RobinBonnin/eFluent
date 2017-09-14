@@ -8,4 +8,5 @@ public class Orthophonist extends User {
     public Orthophonist(LoginManager data){
         super(data);
     }
+    public Orthophonist (){}
 }

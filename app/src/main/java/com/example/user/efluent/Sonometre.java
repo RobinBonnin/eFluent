@@ -1,5 +1,6 @@
 package com.example.user.efluent;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +32,8 @@ class GetTime extends TimerTask {
     long start;
     Sonometre sonometre;
     float TIME_SUCCESS = 2;
+
+
 
 
     public GetTime(Sonometre sonometre){
@@ -105,6 +108,7 @@ class GetAudio extends TimerTask {
 public class Sonometre extends AppCompatActivity {
 
     public static Exercise exercise;
+    public static Patient patient;
     public static LoginManager login;
     private int LIIMT = 1000;
     Timer timer;
@@ -114,6 +118,7 @@ public class Sonometre extends AppCompatActivity {
     public TextView comment;
     GetTime changeLabelTaskt;
     private ViewGroup zoomGood;
+    public static Activity previousActivity;
 
 
     @Override
@@ -168,7 +173,7 @@ public class Sonometre extends AppCompatActivity {
             timer2 = null;
         }
         if (!(timer == null)) {
-            login.sendExerciseSonometre(this, exercise.id.toString());
+            //login.sendExerciseSonometre(this, exercise.id.toString());
             timer.cancel();
             timer.purge();
             timer = null;
@@ -229,7 +234,7 @@ public class Sonometre extends AppCompatActivity {
 
         if( id == android.R.id.home) {
             System.out.println("Je vais en arrière");
-            Intent back = new Intent(getApplicationContext(), PatientActivity.class);
+            Intent back = new Intent(getApplicationContext(), previousActivity.getClass());
             startActivity(back);
             return true;
         }

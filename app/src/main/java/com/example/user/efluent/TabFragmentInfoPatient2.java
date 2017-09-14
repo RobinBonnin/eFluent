@@ -3,6 +3,7 @@ package com.example.user.efluent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -20,7 +21,7 @@ public class TabFragmentInfoPatient2 extends ListFragment implements ExerciseRec
     //ArrayList<Exercise> exerciseList;
     public Patient patient;
     public LoginManager login;
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    public Orthophonist ortho;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class TabFragmentInfoPatient2 extends ListFragment implements ExerciseRec
                 Intent intent = new Intent(getView().getContext(), GiveExerciseActivity.class);
                 GiveExerciseActivity.patient_to_add = patient;
                 GiveExerciseActivity.login = login;
+                GiveExerciseActivity.previousActivity = getActivity();
                 startActivity(intent);
             }
         });
@@ -80,11 +82,10 @@ public class TabFragmentInfoPatient2 extends ListFragment implements ExerciseRec
         ArrayList<Exercise> exerciseListFiltered = new ArrayList<Exercise>();
 
         for(Exercise exercise: exerciseList ){
-            if (!exercise.done){
+            //if (!exercise.done){
                 exerciseListFiltered.add(exercise);
-            }
+            //}
         }
-
 
         CustomExerciseListAdapter adapter  = new CustomExerciseListAdapter(getActivity(),
                 exerciseListFiltered.toArray(new Exercise[exerciseListFiltered.size()]));
@@ -94,16 +95,34 @@ public class TabFragmentInfoPatient2 extends ListFragment implements ExerciseRec
                 R.layout.rowlayout, R.id.label, patient_names.toArray(new String[patient_names.size()]));
         setListAdapter(adapter);*/
 
-        /*getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Log.i("test", "Click from the list");
-                final String item = (String) parent.getItemAtPosition(position);
-                Log.i("test", "Word of exercises is: " + item);
+                final Exercise item = (Exercise) parent.getItemAtPosition(position);
+                Log.i("test", "Word of exercises is: in this list " + item.word);
+                Intent intent;
+                if (item.word.equals("Sonometre")){
+                    intent = new Intent(getView().getContext(), Sonometre.class);
+                    Sonometre.exercise = item;
+                    Sonometre.login = login;
+                    Sonometre.patient = patient;
+                    Sonometre.previousActivity = getActivity();
+                }
+                else {
+                    intent = new Intent(getView().getContext(), ExerciseVocal.class);
+                    ExerciseVocal.exercise = item;
+                    ExerciseVocal.login = login;
+                    ExerciseVocal.patient = patient;
+                    ExerciseVocal.ortho = ortho;
+                    ExerciseVocal.previousActivity = getActivity();
+                }
+
+                startActivity(intent);
             }
-        });*/
+        });
     }
 
 

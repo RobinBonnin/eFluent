@@ -1,25 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swiperefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ListView android:id="@android:id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
+        app:lottie_loop="true"/>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
-        <!--<TextView
-            android:id="@+id/textView"
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:visibility="invisible"/>
+
+    <com.github.mikephil.charting.charts.BubbleChart
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Hello, je suis Bubble chart"
+        android:id="@+id/bubbleChart"
+        android:visibility="invisible"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Hello, je suis Linear chart"
+        android:id="@+id/linearChart"
+        android:visibility="invisible"/>
+
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
+
+        <io.github.yavski.fabspeeddial.FabSpeedDial
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Performance"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>-->
+            android:layout_gravity="bottom|end"
+            app:fabGravity="bottom_end"
+            app:fabMenu="@menu/fab"
+            android:id="@+id/fab_speed_dial"
+            app:miniFabBackgroundTint="@android:color/white"
+            app:miniFabDrawableTint="?attr/colorPrimaryDark"
+            app:miniFabTitleTextColor="?attr/colorPrimaryDark" />
+
+    </FrameLayout>
+
+
 
     </RelativeLayout>

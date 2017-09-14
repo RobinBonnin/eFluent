@@ -11,4 +11,10 @@
         android:title="Logout"
         android:orderInCategory="100"
         app:showAsAction="always" />
+    <item
+        android:icon="@drawable/ic_send_white"
+        android:orderInCategory="00"
+        android:title="Messages from ortho"
+        app:showAsAction="always"
+        />
 </menu>

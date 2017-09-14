@@ -22,9 +22,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class PatientActivity extends AppCompatActivity {
     /** UNCOMMENT THIS **/
     public static LoginManager login;
+    public static Patient patient;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -42,12 +46,13 @@ public class PatientActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       //getSupportActionBar().setTitle(+ " "+ .last_name); A faire ajouter le nom du patient
+        /*getSupportActionBar().setTitle(patient.first_name+ " "+ patient.last_name);//A faire ajouter le nom du patient*/
+
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -55,9 +60,13 @@ public class PatientActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         //tabLayout.setupWithViewPager(mViewPager);
-
+        tabLayout.addTab(tabLayout.newTab().setText("Dashboard"));
         tabLayout.addTab(tabLayout.newTab().setText("Exercices A Faire"));
         tabLayout.addTab(tabLayout.newTab().setText("Planning"));
+        getSupportActionBar().setTitle(patient.first_name + " " + patient.last_name);
+
+
+
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         // Set up the ViewPager with the sections adapter.
@@ -68,9 +77,9 @@ public class PatientActivity extends AppCompatActivity {
                 (getSupportFragmentManager(), tabLayout.getTabCount());
         /** UNCOMMENT THIS **/
         adapter.login  = this.login;
+        adapter.patient = this.patient;
         mViewPager.setAdapter(adapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -122,6 +131,7 @@ public class PatientActivity extends AppCompatActivity {
                 Intent logout = new Intent(getApplicationContext(),MainActivity.class);
                 Toast toast = Toast.makeText(getApplicationContext(),"You are now logged out", Toast.LENGTH_LONG);
 
+
                 startActivity(logout);
                 //final ActionMenuItem itemlogout = (findViewById()) findViewById(R.id.logout);
                 //itemlogout.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
@@ -140,7 +150,8 @@ public class PatientActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
+    public void displayPatient(Patient patientToDisplay) {
+    }
     /**
      * A placeholder fragment containing a simple view.
      */

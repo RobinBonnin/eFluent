@@ -1,6 +1,4 @@
 
-sudo pip3 install virtualenv
-
 source "virtualenv/bin/activate"
 
 pip install -r requirements.txt

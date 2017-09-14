@@ -1,73 +1,31 @@
 package com.example.user.efluent;
 
-
-import android.app.Activity;
-import android.content.Intent;
+/**
+ * Created by User on 24/05/2016.
+ */
+import android.content.Context;
+import android.icu.text.IDNA;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.util.Log;
-import android.widget.Button;
+import android.widget.TextView;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.mindorks.placeholderview.ExpandablePlaceHolderView;
 
 import java.util.ArrayList;
 
-public class TabFragmentPatient1 extends ListFragment implements ExerciseReceiver{
+public class TabFragmentPatient1 extends Fragment {
 
-    LoginManager login;
-
-    ArrayList<Exercise> exerciseList;
-
-    public void setExercises(ArrayList<Exercise> exerciseList){
-        this.exerciseList = exerciseList;
-        ArrayList<String> patient_names = new ArrayList<String>();
-
-        for(Exercise exercise: exerciseList ){
-            // System.out.println("first name: " + exercise.time.toString());
-            if (!exercise.done){
-                patient_names.add(exercise.word);
-                //FIXME this should be on the adapter
-            }
-        }
-
-
-        /*ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.rowlayout, R.id.label, patient_names.toArray(new String[patient_names.size()]));*/
-        CustomExerciseListAdapter adapter  = new CustomExerciseListAdapter(getActivity(),
-                exerciseList.toArray(new Exercise[exerciseList.size()]));
-        //patient_list.toArray(new Patient[patient_list.size()])
-
-        setListAdapter(adapter);
-
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-                Log.i("test", "Click from the list");
-                final Exercise item = (Exercise) parent.getItemAtPosition(position);
-                Log.i("test", "Word of exercises is: " + item);
-                Intent intent;
-                if (item.type.equals("Sonometre")){
-                    intent = new Intent(getView().getContext(), Sonometre.class);
-                    Sonometre.exercise = item;
-                    Sonometre.login = login;
-                }
-                else {
-                    intent = new Intent(getView().getContext(), ExerciseVocal.class);
-                    ExerciseVocal.exercise = item;
-                    ExerciseVocal.login = login;
-                }
-
-                startActivity(intent);
-            }
-        });
-    }
-
+    public Patient patient;
+    public LoginManager login;
+    ArrayList<Message> messages;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.tab_fragment_patient_1, container, false);
@@ -76,6 +34,11 @@ public class TabFragmentPatient1 extends ListFragment implements ExerciseReceive
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        final LottieAnimationView animationView = (LottieAnimationView) getActivity().findViewById(R.id.animation_view);
+        animationView.playAnimation();
+        animationView.setSpeed(0.2f);
+
+
         /*String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
                 "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
                 "Linux", "OS/2" };*/
@@ -83,16 +46,31 @@ public class TabFragmentPatient1 extends ListFragment implements ExerciseReceive
                 R.layout.rowlayout, R.id.label,values);
         setListAdapter(adapter);*/
 
-        /*View goExo = getActivity().findViewById(R.id.GoExoVocal);
+    }
 
-        goExo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i("Test", "GoExoVocal");
-                Intent intent = new Intent(getView().getContext(), ExerciseVocal.class);
-                startActivity(intent);
+    public void countExercisesNotDone(ArrayList<Exercise> exerciseList) {
+        //this.exerciseList = exerciseList;
+        ArrayList<Exercise> exerciseListFiltered = new ArrayList<Exercise>();
+
+        for (Exercise exercise : exerciseList) {
+            if (!exercise.done){
+                Log.d("TEST", "J'ajoute l'exercise " + exercise.word + " est il fait " + exercise.done + " " + exercise.id);
+                exerciseListFiltered.add(exercise);
             }
-        });*/
+        }
+        TextView nbOfexercises = getActivity().findViewById(R.id.nb_of_ex_left);
+        nbOfexercises.setText("Il reste " + exerciseListFiltered.size() + " exercises.");
+    }
+
+    public void setMessageList(ArrayList<Message> messages){
+        Context mContext = getActivity().getApplicationContext();
+        ExpandablePlaceHolderView mExpandableView = (ExpandablePlaceHolderView) getActivity().findViewById(R.id.expandableView);
+        for(Message data : messages){
+            mExpandableView.addView(new HeadingView(mContext, data.getTitle()));
+            mExpandableView.addView(new InfoView(mContext, data));
+        }
 
     }
+
 }
+

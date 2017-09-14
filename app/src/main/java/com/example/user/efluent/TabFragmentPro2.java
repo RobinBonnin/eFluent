@@ -17,9 +17,10 @@ import java.util.ArrayList;
 public class TabFragmentPro2 extends ListFragment implements MeetingReceiver{
 
     private ArrayList<Meeting> meetingList;
-    private ArrayList<Patient> patient_list;
+    public ArrayList<Patient> patient_list;
     public LoginManager login;
     public static Patient patient;
+    public Orthophonist ortho;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,10 +48,15 @@ public class TabFragmentPro2 extends ListFragment implements MeetingReceiver{
                 Log.i("Test", "GoAddPatient");
                 Intent intent = new Intent(getView().getContext(), GiveRendezvousActivity.class);
                 GiveRendezvousActivity.login = login;
-                GiveRendezvousActivity.patient = patient;
+                GiveRendezvousActivity.patientList = patient_list;
+                GiveRendezvousActivity.ortho = ortho;
                 startActivity(intent);
             }
         });
+    }
+
+    public void setPatient(ArrayList<Patient> patientList) {
+        patient_list = patientList;
     }
 
 
@@ -59,13 +65,13 @@ public class TabFragmentPro2 extends ListFragment implements MeetingReceiver{
         ArrayList<String> patient_names = new ArrayList<String>();
 
         for(Meeting meeting: meetingList ){
-            System.out.println("first name: " + meeting.time.toString());
-            patient_names.add(meeting.time.toString());
+            Log.d("TAG","first name: " + meeting.date.toString());
+            patient_names.add(meeting.date.toString());
         }
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.rowlayout, R.id.label, patient_names.toArray(new String[patient_names.size()]));
+        CustomMeetingListAdapter adapter= new CustomMeetingListAdapter(getActivity(),
+                meetingList.toArray(new Meeting[meetingList.size()]));
         setListAdapter(adapter);
 
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -74,7 +80,7 @@ public class TabFragmentPro2 extends ListFragment implements MeetingReceiver{
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Log.i("test", "Click from the list");
-                final String item = (String) parent.getItemAtPosition(position);
+                final Meeting item =(Meeting) parent.getItemAtPosition(position);
                 Log.i("test", "Name of patient is: " + item);
             }
         });

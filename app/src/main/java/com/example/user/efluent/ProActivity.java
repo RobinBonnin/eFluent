@@ -23,10 +23,16 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ProActivity extends AppCompatActivity {
 
     public static LoginManager login;
+    public static Orthophonist ortho;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -38,6 +44,7 @@ public class ProActivity extends AppCompatActivity {
      */
     //private SectionsPagerAdapter mSectionsPagerAdapter;
 
+    FirebaseAuth mAuth;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -49,12 +56,13 @@ public class ProActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pro);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            //getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+        getSupportActionBar().setTitle(ortho.first_name + " " + ortho.last_name);
+
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         //mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -65,7 +73,7 @@ public class ProActivity extends AppCompatActivity {
 
         tabLayout.addTab(tabLayout.newTab().setText("Patients"));
         tabLayout.addTab(tabLayout.newTab().setText("Rendez-vous"));
-        tabLayout.addTab(tabLayout.newTab().setText("Contact développeurs"));
+        tabLayout.addTab(tabLayout.newTab().setText("Contact"));;
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         // Set up the ViewPager with the sections adapter.
@@ -73,7 +81,8 @@ public class ProActivity extends AppCompatActivity {
         //mViewPager.setAdapter(mSectionsPagerAdapter);
         final PagerAdapterPro adapter = new PagerAdapterPro
                 (getSupportFragmentManager(), tabLayout.getTabCount());
-        adapter.login  = this.login;
+        adapter.login = this.login;
+        adapter.ortho = ortho;
         mViewPager.setAdapter(adapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
@@ -105,6 +114,7 @@ public class ProActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -112,6 +122,7 @@ public class ProActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_pro, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -146,6 +157,11 @@ public class ProActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+
+
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -217,6 +233,8 @@ public class ProActivity extends AppCompatActivity {
             return null;
         }
     }*/
+
+
 
 
 }

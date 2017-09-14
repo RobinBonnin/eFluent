@@ -2,7 +2,9 @@ package com.example.user.efluent;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.IntDef;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,38 +17,36 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class GiveRendezvousActivity extends AppCompatActivity implements
         View.OnClickListener {
 
 
+    public static ArrayList<Patient> patientList;
     int year, monthOfYear, dayOfMonth;
     int hour, minute;
     public static LoginManager login;
-    public ArrayList<Patient> patient_list;
-    public static Patient patient;
+    public static Orthophonist ortho;
+    Meeting meeting;
 
-    Button btnDatePicker, btnTimePicker;
+    Button btnDatePicker, btnTimePicker, btnRDV;
     EditText txtDate, txtTime;
     private Integer mYear, mMonth, mDay, mHour, mMinute;
-
     private Spinner mySpinner;
     private SpinAdapter spinAdapter;
 
-    public Patient choosenPatient;
+    public static Patient choosenPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_give_rendezvous);
-
+        setPatients(patientList);
         final GiveRendezvousActivity self = this;
+        meeting = new Meeting();
 
         btnDatePicker = (Button)findViewById(R.id.buttonDatePicker);
         btnTimePicker = (Button)findViewById(R.id.buttonTimePicker);
@@ -57,38 +57,33 @@ public class GiveRendezvousActivity extends AppCompatActivity implements
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
 
-        login.patientList2(self);
-
         final Button buttonFix = (Button) findViewById(R.id.buttonFixRDV);
         buttonFix.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.i("test", "-> ProActivity tab");
-                //datechoisie.set(mYear + 1900, mMonth, mDay, mHour, mMinute);
-                //Object Date is deprecated, better use Calendar!
+                if( mHour != null && mYear != null && choosenPatient != null ) {
+                    Log.d("TEST", choosenPatient.email + " " + txtDate.getText() + txtTime.getText());
 
+                    Log.i("test", "-> ProActivity tab");
+                    //datechoisie.set(mYear + 1900, mMonth, mDay, mHour, mMinute);
+                    //Object Date is deprecated, better use Calendar!
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(year, monthOfYear, dayOfMonth, hour, minute, 0);
+                    meeting.patient = choosenPatient;
+                    Date date = new Date();
+                    meeting.date = calendar.getTime();
+                    Log.d("ETST", meeting.date.toString());
+                    login.addMeeting(self, choosenPatient, ortho, meeting);
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, monthOfYear, dayOfMonth, hour, minute, 0);
-       /*         Log.i("test", mYear.toString());
-                Log.i("test", mMonth.toString());
-                Log.i("test", mDay.toString());
-                Log.i("test", mHour.toString());
-                Log.i("test", mMinute.toString());*/
+                    // String formatedDate = "hola";
+                    // Log.i("test", formatedDate);
 
-                // The following doesn't work, I have no idea why! FIXME
-                Date date = calendar.getTime();
-                //Log.i("test", date.toString());
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                String formatedDate = df.format(date);
-                Log.i("test", formatedDate );
-
-                // String formatedDate = "hola";
-                // Log.i("test", formatedDate);
-
-                //login.createRDV(self, choosenPatient, "formatedDate");
-                login.createRDV(self, spinAdapter.getItem(mySpinner.getSelectedItemPosition()), formatedDate);
-
-
+                    //login.createRDV(self, choosenPatient, "formatedDate");
+                    //login.createRDV(self, spinAdapter.getItem(mySpinner.getSelectedItemPosition()), formatedDate);
+                }
+                else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Please fill everything before sending the meeting", Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
         });
 
@@ -101,9 +96,9 @@ public class GiveRendezvousActivity extends AppCompatActivity implements
 
             // Get Current Date
             final Calendar c = Calendar.getInstance();
-            mYear = c.get(Calendar.YEAR);
+            mYear = c.get(Calendar.DATE);
             mMonth = c.get(Calendar.MONTH);
-            mDay = c.get(Calendar.DAY_OF_MONTH);
+            mDay = c.get(Calendar.DAY_OF_WEEK);
 
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
@@ -114,7 +109,6 @@ public class GiveRendezvousActivity extends AppCompatActivity implements
                                               int monthOfYear, int dayOfMonth) {
                             setDate(year, monthOfYear, dayOfMonth);
                             txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -124,9 +118,8 @@ public class GiveRendezvousActivity extends AppCompatActivity implements
 
             // Get Current Time
             final Calendar c = Calendar.getInstance();
-            mHour = c.get(Calendar.HOUR_OF_DAY);
+            mHour = c.get(Calendar.HOUR);
             mMinute = c.get(Calendar.MINUTE);
-
             // Launch Time Picker Dialog
             TimePickerDialog timePickerDialog = new TimePickerDialog(this,
                     new TimePickerDialog.OnTimeSetListener() {
@@ -138,15 +131,15 @@ public class GiveRendezvousActivity extends AppCompatActivity implements
                             txtTime.setText(hourOfDay + ":" + minute);
                         }
                     }, mHour, mMinute, false);
+
             timePickerDialog.show();
         }
-
         //datechoisie.set(mYear + 1900, mMonth, mDay, mHour, mMinute);
         //Object Date is deprecated, better use Calendar!
     }
 
     public void setPatients (final ArrayList<Patient> patient_list){
-        this.patient_list = patient_list;
+        this.patientList = patient_list;
 
         System.out.println("INSIDE GIVE_RENDEZVOUS_ACTIVITY!!!");
         System.out.println(patient_list.size());
@@ -154,6 +147,7 @@ public class GiveRendezvousActivity extends AppCompatActivity implements
         // Initialize the spinAdapter sending the current context
         // Send the simple_spinner_item layout
         // And finally send the Patient array (Your data)
+
 
         spinAdapter = new SpinAdapter(GiveRendezvousActivity.this,
                 R.layout.spinner_row,
@@ -169,9 +163,12 @@ public class GiveRendezvousActivity extends AppCompatActivity implements
             public void onItemSelected(AdapterView<?> adapterView, View view,
                                        int position, long id) {
                 // Here you get the current item (a User object) that is selected by its position
+                spinAdapter.first_call();
                 Patient patient = spinAdapter.getItem(position);
                 choosenPatient = patient;
                 Log.i("test", Integer.toString(mySpinner.getSelectedItemPosition() ));
+
+
                 // Here you can do the action you want to...
                 /*Toast.makeText(GiveRendezvousActivity.this, "Name: " + patient.first_name,
                         Toast.LENGTH_SHORT).show();*/
@@ -190,8 +187,7 @@ public class GiveRendezvousActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    private void setDate(int year,
-                   int monthOfYear, int dayOfMonth){
+    private void setDate(int year, int monthOfYear, int dayOfMonth){
         this.year = year;
         this.monthOfYear = monthOfYear;
         this.dayOfMonth = dayOfMonth;

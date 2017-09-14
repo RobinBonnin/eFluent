@@ -9,26 +9,31 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseUser;
 
 public class AddPatientActivity extends AppCompatActivity {
 
-
+    private FirebaseUser user;
     public static TabFragmentPro1 fragmentICameFrom;
     public static LoginManager login;
-
+    ProgressBar dialog;
     Button addPatient;
     EditText lastName;
     EditText firstName;
     EditText email;
     EditText phoneNumber;
     EditText password;
+    static public MainActivity activityMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_patient);
-
+        dialog = ((ProgressBar) findViewById(R.id.indeterminate));
+        dialog.setVisibility(View.INVISIBLE);
         addPatient = (Button)findViewById(R.id.CreatePatient);
         lastName = (EditText)findViewById(R.id.AddPatientName);
         firstName = (EditText)findViewById(R.id.AddPatientFirstName);
@@ -51,9 +56,13 @@ public class AddPatientActivity extends AppCompatActivity {
                         patient.first_name = firstName.getText().toString();
                         //System.out.println("patient.first_name = " + patient.first_name);
                         patient.email = email.getText().toString();
+                        patient.email = patient.email.replaceAll("\\s+","");
+
+                        patient.phone_number = phoneNumber.getText().toString();
                         //System.out.println("patient.email = " + patient.email);
-                        //patient.phone_number = phoneNumber.getText().toString();
                         patient.password = password.getText().toString();
+                        patient.username = ((patient.first_name + patient.last_name).toLowerCase());
+                        patient.username = patient.username.replaceAll("\\s+","");
                         //System.out.println("patient.password = " + patient.password);
 
                         if (!patient.isValid()){
@@ -83,20 +92,28 @@ public class AddPatientActivity extends AppCompatActivity {
                                     .show();
                             return;
                         }
+                        dialog.setVisibility(View.VISIBLE);
                         login.addPatient(patient, self);
-
-                        Intent intent = new Intent(view.getContext(), ProActivity.class);
-                        startActivity(intent);
-
-                        Toast toast = Toast.makeText(getApplicationContext(), "Add Patient successful!", Toast.LENGTH_LONG);
-                        toast.show();
-
                     }
                 });
 
     }
-
     public void addNewToList(Patient patient) {
         //fragmentICameFrom.AddPatientToList(patient);
+    }
+
+    public void singUpSuccess(Orthophonist ortho) {
+        dialog.setVisibility(View.INVISIBLE);
+        Toast toast = Toast.makeText(getApplicationContext(), "Inscription Orthophonist successful!", Toast.LENGTH_LONG);
+        toast.show();
+        Intent intent = new Intent(this, ProActivity.class);
+        startActivity(intent);
+        login.signIn(ortho.email, ortho.password);
+    }
+
+    public void signuperror(Exception task) {
+        dialog.setVisibility(View.INVISIBLE);
+        Toast toast = Toast.makeText(this, "Inscription failed : " + task,Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

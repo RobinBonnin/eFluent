@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+import com.google.android.gms.tasks.Task;
+
 
 public class InscriptionProActivity extends AppCompatActivity {
 
@@ -23,7 +26,7 @@ public class InscriptionProActivity extends AppCompatActivity {
 
     static public MainActivity oldActivity;
 
-    ProgressDialog dialog;
+    ProgressBar dialog;
 
     static public LoginManager login;
 
@@ -47,6 +50,9 @@ public class InscriptionProActivity extends AppCompatActivity {
         email.setText("mymail@hotmail.com");
         password.setText("123456");
 
+        dialog = ((ProgressBar) findViewById(R.id.indeterminate));
+        dialog.setVisibility(View.INVISIBLE);
+
         final InscriptionProActivity self = this;
 
         createPro.setOnClickListener(
@@ -59,13 +65,16 @@ public class InscriptionProActivity extends AppCompatActivity {
                         //System.out.println("patient.last_name = " + patient.last_name);
                         ortho.first_name = firstName.getText().toString();
                         //System.out.println("patient.first_name = " + patient.first_name);
-                        ortho.email = email.getText().toString();
+                        ortho.email = email.getText().toString().toLowerCase();
+                        ortho.email = ortho.email.replaceAll("\\s+","");
+
                         //System.out.println("patient.email = " + patient.email);
                         ortho.phone_number = phoneNumber.getText().toString();
                         ortho.password = password.getText().toString();
                         ortho.numADELI = numADELI.getText().toString();
 
                         ortho.username = (ortho.first_name + ortho.last_name).toLowerCase();
+                        ortho.username = ortho.username.replaceAll("\\s+","");
                         //System.out.println("patient.password = " + patient.password);
                         if (!ortho.isValid()){
                             final AlertDialog show = new AlertDialog.Builder(InscriptionProActivity.this)
@@ -94,6 +103,9 @@ public class InscriptionProActivity extends AppCompatActivity {
                                     .show();
                             return;
                         }
+
+                        dialog.setVisibility(View.VISIBLE);
+                        /* Creation d'un orthophoniste */
                         login.createOrthophoniste(ortho, self);
 
 
@@ -101,10 +113,6 @@ public class InscriptionProActivity extends AppCompatActivity {
                         /*Intent intent = new Intent(view.getContext(), MainActivity.class);
                         startActivity(intent);*/
 
-                        dialog = new ProgressDialog(self);
-                        dialog.setTitle("Loging in");
-                        dialog.setMessage("Wait while loading...");
-                        dialog.show();
                     }
                 });
 
@@ -112,15 +120,20 @@ public class InscriptionProActivity extends AppCompatActivity {
 
     public void singUpSuccess() {
         //oldActivity.
-        dialog.dismiss();
+        dialog.setVisibility(View.INVISIBLE);
         Toast toast = Toast.makeText(getApplicationContext(), "Inscription Orthophonist successful!", Toast.LENGTH_LONG);
         toast.show();
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
-        oldActivity.login(ortho.username, ortho.password);
+        oldActivity.login(ortho.email, ortho.password);
 
+    }
+    public void signuperror(Exception task){
+        dialog.setVisibility(View.INVISIBLE);
+        Toast toast = Toast.makeText(this, "Inscription failed : " + task,Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     /*public void addNewToList(Patient patient) {

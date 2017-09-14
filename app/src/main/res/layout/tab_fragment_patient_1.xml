@@ -2,11 +2,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <ListView android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        app:lottie_fileName="star.json"
+        android:id="@+id/animation_view"
+        app:lottie_autoPlay="true"
+        android:layout_below="@id/nb_of_ex_left"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:id="@+id/nb_of_ex_left"
+        android:layout_centerHorizontal="true"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
+
+    <com.mindorks.placeholderview.ExpandablePlaceHolderView
+        android:id="@+id/expandableView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:layout_below="@id/animation_view"/>
+
+    </RelativeLayout>
 
     <!-- <Button
         android:layout_width="wrap_content"
@@ -26,5 +52,3 @@
         android:layout_centerInParent="true"
         android:text="Liste exo à faire"
         android:textAppearance="?android:attr/textAppearanceLarge"/> -->
-
-</RelativeLayout>

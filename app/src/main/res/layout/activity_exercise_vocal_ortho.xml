@@ -17,7 +17,8 @@
         android:src="@drawable/ic_mic_black_48dp"
         android:layout_marginBottom="106dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorWhite"/>
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -26,7 +27,8 @@
         android:src="@drawable/ic_hearing_black_48dp"
         android:layout_marginTop="119dp"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/WordToPronounce" />
+        android:layout_toStartOf="@+id/WordToPronounce"
+        android:background="@color/colorWhite"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,41 +69,37 @@
         android:layout_alignBottom="@+id/CallMic"
         android:layout_toEndOf="@+id/CallMic" />
 
-    <RelativeLayout
-        android:id="@+id/grade_bad"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
+    <ImageButton
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/validate"
+        android:src="@drawable/ic_check_circle_black_48dp"
+        android:tint="@color/cpb_green"
+        android:background="@color/colorWhite"
+        android:onClick="chooseSuccess"
+        android:scaleX="1.5"
+        android:scaleY="1.5"/>
+
+    <ImageButton
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:scaleType="matrix"
+        android:id="@+id/refuse"
+        android:src="@drawable/ic_cancel_black_48dp"
+        android:tint="@color/red"
+        android:background="@color/colorWhite"
+        android:onClick="chooseSuccess"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"/>
 
 
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/grade"
-        android:src="@drawable/ic_mood_bad_black_48dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-    </RelativeLayout>
-
-
-
-    <RelativeLayout
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:id="@+id/grade_good">
-
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_mood_black_48dp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
 
 </RelativeLayout>

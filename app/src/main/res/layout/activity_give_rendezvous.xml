@@ -33,11 +33,11 @@
         android:id="@+id/spinnerListPatient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        android:drawSelectorOnTop="true"
+        android:spinnerMode="dialog"
+        android:drawSelectorOnTop="false"
         android:layout_alignTop="@+id/textView13"
-        android:layout_alignStart="@+id/DateRDV" />
+        android:layout_alignStart="@+id/DateRDV"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -87,13 +87,14 @@
         android:layout_alignStart="@+id/DateRDV" />
 
     <Button
-        style="?android:attr/buttonStyleSmall"
+        style="@style/AppTheme.DatePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="DATE"
         android:id="@+id/buttonDatePicker"
         android:layout_alignBottom="@+id/DateRDV"
-        android:layout_alignStart="@+id/buttonFixRDV" />
+        android:layout_alignStart="@+id/buttonFixRDV"
+        />
 
     <Button
         style="?android:attr/buttonStyleSmall"

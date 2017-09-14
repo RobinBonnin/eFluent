@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class TabFragmentInfoPatient1 extends Fragment {
 
-    Patient patient;
+    public static Patient patient;
     TextView nom;
     TextView prenom;
     TextView email;
@@ -37,7 +37,7 @@ public class TabFragmentInfoPatient1 extends Fragment {
         email.setText(patient.email);
 
         phonenumber = (TextView )myFragmentView.findViewById(R.id.InfoPatientNumeroTel);
-        phonenumber.setText(patient.id);
+        phonenumber.setText(patient.phone_number);
 
         return myFragmentView;
     }

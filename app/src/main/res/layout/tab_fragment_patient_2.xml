@@ -8,12 +8,23 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 
-    <TextView
+    <!-- <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EXO"
+        android:id="@+id/GoExoVocal"
+        android:layout_marginBottom="47dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="46dp" /> -->
+
+
+    <!-- <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Planning"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        android:text="Liste exo à faire"
+        android:textAppearance="?android:attr/textAppearanceLarge"/> -->
 
 </RelativeLayout>

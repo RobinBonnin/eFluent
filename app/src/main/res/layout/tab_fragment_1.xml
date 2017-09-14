@@ -1,44 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_marginBottom="300dp"
+        android:layout_centerHorizontal="true"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_fileName="pencil_write.json"/>
 
-        <!-- <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Liste des patients"
-            android:textAppearance="?android:attr/textAppearanceLarge"/> -->
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/activity_main_swipe_refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ListView
-                android:id="@android:id/list"
-                android:layout_width="fill_parent"
-                android:layout_height="0dip"
-                android:layout_weight="1"
-                android:drawSelectorOnTop="false"/>
-        </android.support.v4.widget.SwipeRefreshLayout>
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:clickable="true"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/GoAddPatient"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:src="@drawable/ic_add_white_24dp"
-            android:paddingBottom="50dp"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="50dp"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="69dp"
-            android:layout_marginEnd="20dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/GoAddPatient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_action_name"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 
-        <!--android:divider="@drawable/list_divider"-->
+    <!--android:divider="@drawable/list_divider"-->
 
-    </RelativeLayout>
+</RelativeLayout>

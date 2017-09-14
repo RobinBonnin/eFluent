@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import static android.R.color.black;
+
 /**
  * Created by Arif on 14/06/2016.
  */
@@ -16,6 +18,7 @@ public class SpinAdapter extends ArrayAdapter<Patient> {
 
     // Your sent context
     private Context context;
+    private boolean first_call = true;
     // Your custom values for the spinner (Patient)
     private ArrayList<Patient> patient_list;
 
@@ -48,12 +51,19 @@ public class SpinAdapter extends ArrayAdapter<Patient> {
         String lastname = patient_list.get(position).last_name;
         fullname = fullname.concat(" " + lastname);
         TextView label = new TextView(context);
-        label.setTextColor(Color.BLACK);
-        label.setTextSize(15);
+        label.setTextSize(20);
         // Then you can get the current item using the values array (Users array) and the current position
         // You can NOW reference each method you has created in your bean object (User class)
-        label.setText(fullname);
+        if(first_call==true){
+            label.setText("Choisissez un patient");
+            label.setTextColor(Color.LTGRAY);
 
+        }
+        else {
+            label.setText(fullname);
+            label.setTextColor(Color.BLACK);
+
+        }
         // And finally return your dynamic (or custom) view for each spinner item
         return label;
     }
@@ -68,10 +78,16 @@ public class SpinAdapter extends ArrayAdapter<Patient> {
         String fullname = patient_list.get(position).first_name;
         String lastname = patient_list.get(position).last_name;
         fullname = fullname.concat(" " + lastname);
-
+        label.setTextSize(30);
+        label.setLineSpacing(2f, 30f);
         label.setTextColor(Color.BLACK);
+
         label.setText(fullname);
 
         return label;
+    }
+    public boolean first_call(){
+        first_call = false;
+        return first_call;
     }
 }

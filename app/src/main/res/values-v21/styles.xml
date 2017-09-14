@@ -4,7 +4,21 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">?attr/actionModeSplitBackground</item>
 
     </style>
+
+    <style name="AppTheme.TimePicker" parent="AppTheme">
+        <item name="android:timePickerMode">clock</item>
+        <item name="android:headerBackground">#ff555555</item>
+        <item name="android:numbersBackgroundColor">#ff555555</item>
+    </style>
+
+
+    <style name="AppTheme.DatePicker" parent="AppTheme">
+        <item name="android:datePickerMode">calendar</item>
+        <item name="android:headerBackground">#ff555555</item>
+        <item name="android:numbersBackgroundColor">#ff555555</item>
+    </style>
+
 </resources>

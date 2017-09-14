@@ -26,7 +26,7 @@ public class CustomExerciseListAdapter extends ArrayAdapter<Exercise> {
         View rowView = inflater.inflate(R.layout.rowlayout2, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.label);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-        textView.setText(values[position].word);
+        textView.setText(values[position].type + " : " + values[position].word);
         // Change the icon for Windows and iPhone
         //Exercise s = values[position];
 /*        if (s.startsWith("Windows7") || s.startsWith("iPhone")

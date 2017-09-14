@@ -71,7 +71,7 @@ class AssignedExercise(models.Model):
     word = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
-        return "%s: %s → %s" % (self.exercise.name, self.patient.orthophoniste, self.patient)
+        return "%s: %s %s" % (self.exercise.name, self.patient.orthophoniste, self.patient)
 
 class Meeting(models.Model):
     patient = models.ForeignKey(Patient, null=False, blank=False)

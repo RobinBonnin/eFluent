@@ -1,21 +1,17 @@
 package com.example.user.efluent;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 
-import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +21,7 @@ import android.widget.Button;
 
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
@@ -34,17 +30,20 @@ import java.util.Locale;
 public class ExerciseVocal extends AppCompatActivity {
 
     Button play,stop;
-    ImageButton record;
+    ImageButton record, listen, validate, refuse;
     //private MediaRecorder myAudioRecorder;
     private String outputFile = null;
 
     TextView exerciseWord;
 
     public static LoginManager login;
+    public static Patient patient;
+    public static Orthophonist ortho;
 
     private WavAudioRecorder mRecorder;
+    public static Activity previousActivity;
 
-    private ProgressDialog loadingDialog;
+    private ProgressBar loadingDialog;
 
     private EditText write;
     private ViewGroup zoomBad;
@@ -64,21 +63,25 @@ public class ExerciseVocal extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);;
-        setContentView(R.layout.activity_exercise_vocal);
-        zoomGood = (ViewGroup)findViewById(R.id.grade_good);
-        zoomBad = (ViewGroup)findViewById(R.id.grade_bad);
-        zoomBad.setVisibility(View.INVISIBLE);
-        zoomGood= (ViewGroup)findViewById(R.id.grade_good);
-        zoomGood.setVisibility(View.INVISIBLE);
+        super.onCreate(savedInstanceState);
+        if(ortho == null ) {
+            setContentView(R.layout.activity_exercise_vocal_patient);
+        }
+        else {
+            setContentView(R.layout.activity_exercise_vocal_ortho);
+        }
+
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         exerciseWord = (TextView) findViewById(R.id.WordToPronounce);
         exerciseWord.setText(exercise.word);
-
+        getSupportActionBar().setTitle(patient.first_name+ " "+ patient.last_name);//A faire ajouter le nom du patient
         play = (Button) findViewById(R.id.playButton);
         stop = (Button) findViewById(R.id.stopButton);
         record = (ImageButton) findViewById(R.id.CallMic);
+        listen = (ImageButton) findViewById(R.id.listenWord);
+        validate = (ImageButton)  findViewById(R.id.validate);
+        refuse = (ImageButton) findViewById(R.id.refuse);
 
         stop.setEnabled(false);
         play.setEnabled(false);
@@ -101,8 +104,7 @@ public class ExerciseVocal extends AppCompatActivity {
 
         /* mRecorder = WavAudioRecorder.getInstanse();
         mRecorder.setOutputFile(outputFile); */
-
-
+        ortho = null;
         final ExerciseVocal self = this;
 
         record.setOnClickListener(new View.OnClickListener() {
@@ -128,18 +130,31 @@ public class ExerciseVocal extends AppCompatActivity {
                 record.setEnabled(false);
                 stop.setEnabled(true);
                 play.setEnabled(false);
-
                 Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        listen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                t1=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                    @Override
+                    public void onInit(int status) {
+                        if (status != TextToSpeech.ERROR) {
+                            t1.setLanguage(Locale.FRANCE);
+                            t1.speak(exercise.word,TextToSpeech.QUEUE_FLUSH,null,null );
+                        }
+                    }
+                });
             }
         });
 
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingDialog = new ProgressDialog(self);
-                loadingDialog.setTitle("Loading");
-                loadingDialog.setMessage("Evaluating your results...");
-                loadingDialog.show();
+                loadingDialog = new ProgressBar(self);
+                loadingDialog.setVisibility(View.VISIBLE);
                 Log.i("test", "pongo el dialog");
                 //myAudioRecorder.stop();
 
@@ -148,7 +163,7 @@ public class ExerciseVocal extends AppCompatActivity {
                 mRecorder.reset();
 
 
-                login.sendExercise(self, outputFile, exercise.id.toString());
+                //login.sendExercise(self, outputFile, exercise.id.toString());
 
                 //myAudioRecorder.release();
 
@@ -185,7 +200,7 @@ public class ExerciseVocal extends AppCompatActivity {
                 }
 
                 m.start();
-                Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_LONG).show();
+                Toast.makeText(self.getApplicationContext(), "Playing audio", Toast.LENGTH_LONG).show();
                 record.setEnabled(true);
             }
         });
@@ -217,7 +232,7 @@ public class ExerciseVocal extends AppCompatActivity {
             public void onInit(int status) {
                 if(status != TextToSpeech.ERROR) {
                     t1.setLanguage(Locale.FRANCE);
-                    t1.speak("Tu as mal prononcé, tu ne mérite pas d'être à l'INSA",TextToSpeech.QUEUE_FLUSH,null,null );
+                    //t1.speak("Tu as mal prononcé, tu ne mérite pas d'être à l'INSA",TextToSpeech.QUEUE_FLUSH,null,null );
                     //t1.speak(exercise.id.toString(),TextToSpeech.QUEUE_FLUSH,null,null );
 
                 }
@@ -230,7 +245,7 @@ public class ExerciseVocal extends AppCompatActivity {
             public void onInit(int status) {
                 if(status != TextToSpeech.ERROR) {
                     t1.setLanguage(Locale.FRANCE);
-                    t1.speak("Félicitation tu es un grand orateur",TextToSpeech.QUEUE_FLUSH,null,null );
+                    //t1.speak("Félicitation tu es un grand orateur",TextToSpeech.QUEUE_FLUSH,null,null );
 
                 }
             }
@@ -256,9 +271,9 @@ public class ExerciseVocal extends AppCompatActivity {
 
         if( id == android.R.id.home) {
             System.out.println("Je vais en arrière");
-            Intent back = new Intent(getApplicationContext(), PatientActivity.class);
-            startActivity(back);
+            goingBack();
             return true;
+
         }
             if (id == R.id.action_settings) {
                 return true;
@@ -321,7 +336,7 @@ public class ExerciseVocal extends AppCompatActivity {
 
 
     public void notifyResult(String result){
-        loadingDialog.dismiss();
+        loadingDialog.setVisibility(View.INVISIBLE);
         /*AlertDialog.Builder alertDialogBuilder =
                 new AlertDialog.Builder(this)
                         .setTitle("Your result")
@@ -335,22 +350,35 @@ public class ExerciseVocal extends AppCompatActivity {
 // Show the AlertDialog.
         if(result.equals("true")){
             Animation zoomGood = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
-            ViewGroup grade = (ViewGroup)findViewById(R.id.grade_good);
             TTS_true();
-            grade.startAnimation(zoomGood);
-            grade.setVisibility(View.VISIBLE);
 
         }
         else {
            Animation zoomBad= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
-            ViewGroup grade = (ViewGroup)findViewById(R.id.grade_bad);
             TTS_false();
-            grade.startAnimation(zoomBad);
-            grade.setVisibility(View.VISIBLE);
         }
+
+
         //Intent back = new Intent(getApplicationContext(), PatientActivity.class);
         //startActivity(back);
         //AlertDialog alertDialog = alertDialogBuilder.show();
 
+    }
+    public void chooseSuccess(View v) {
+        switch (v.getId()){
+            case R.id.validate:
+                login.exerciseDone(this,patient,exercise);
+
+                break;
+            case R.id.refuse:
+                login.exerciseNotDone(this,patient,exercise);
+                break;
+
+        }
+
+    }
+    public void goingBack(){
+        Intent back = new Intent(getApplicationContext(),previousActivity.getClass());
+        startActivity(back);
     }
 }

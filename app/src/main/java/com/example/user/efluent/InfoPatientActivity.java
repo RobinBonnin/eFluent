@@ -26,7 +26,7 @@ public class InfoPatientActivity extends AppCompatActivity {
 
     public static LoginManager login;
     public static Patient patient;
-
+    public static Orthophonist ortho;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -65,7 +65,7 @@ public class InfoPatientActivity extends AppCompatActivity {
 
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Exercices"));
-        tabLayout.addTab(tabLayout.newTab().setText("Performances"));
+        tabLayout.addTab(tabLayout.newTab().setText("Statistics"));
         tabLayout.addTab(tabLayout.newTab().setText("Commentaires"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -78,6 +78,7 @@ public class InfoPatientActivity extends AppCompatActivity {
         //Pass the object patient to the adapter
         System.out.println("Name patient2 : " + patient.first_name);
         adapter.patient = this.patient;
+        adapter.ortho = ortho;
         mViewPager.setAdapter(adapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
@@ -130,11 +131,7 @@ public class InfoPatientActivity extends AppCompatActivity {
                 Intent back = new Intent(getApplicationContext(),ProActivity.class);
                 startActivity(back);
                 return true;
-            case R.id.logout:
-                Intent logout = new Intent(getApplicationContext(),MainActivity.class);
-                Toast toast = Toast.makeText(getApplicationContext(),"You are now logged out", Toast.LENGTH_LONG);
 
-                startActivity(logout);
                 //final ActionMenuItem itemlogout = (findViewById()) findViewById(R.id.logout);
                 //itemlogout.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
                   /*  public void onClick(View v) {
@@ -143,9 +140,6 @@ public class InfoPatientActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });*/
-
-                //logout code
-                return true;
             case R.id.action_settings :
                 return true;
             default:

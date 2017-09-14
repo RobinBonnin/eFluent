@@ -17,7 +17,7 @@ from rest_framework.parsers import FileUploadParser
 
 from django.contrib.auth.decorators import login_required
 
-from . import serializers, models
+from import serializers, models
 # Create your views here.
 
 

@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from e_fluent_app.models import CustomUser
 from rest_framework import routers, serializers, viewsets
 
-from .views import *
+from views import *
 
 # # Serializers define the API representation.
 # class UserSerializer(serializers.HyperlinkedModelSerializer):

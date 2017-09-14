@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "698286660181",
+    "firebase_url": "https://efluent-69a0e.firebaseio.com",
+    "project_id": "efluent-69a0e",
+    "storage_bucket": "efluent-69a0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698286660181:android:4435cee6042b007b",
+        "android_client_info": {
+          "package_name": "com.example.user.efluent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "698286660181-gq1nj7q0he28m4ktd1as3bvl1n7pepma.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.user.efluent",
+            "certificate_hash": "7378181a24755cb149f0121cc40144d6efb0aa74"
+          }
+        },
+        {
+          "client_id": "698286660181-6pvkfhvdlo632idiv68ar4vqb5k1igdn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN-urZ4XJL5iQdI79nkx-lfjChSPBSTJs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "698286660181-6pvkfhvdlo632idiv68ar4vqb5k1igdn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
